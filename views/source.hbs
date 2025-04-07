@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  </head>
+</head>
+<body>
+    <nav>
+        <h4>Identity Migration Tool</h4>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/source">Register</a></li>
+        </ul>
+    </nav>
+
+     <div class="container mt-4">
+        <div class="mt-4 p-5 bg-primary text-white rounded" style="text-align: center;">
+            <p>This is where the <b>MAGIC!</b> begins.</p>
+            <p>Select you source type and fill the required details in below form.</p>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <form id="sourceForm" action="/getSelected" method="POST">
+            <select id="selectpicker" data-style="btn-info" name="selectpicker">
+                <optgroup label="Select Source Type">
+                    <option name="" value="0">Select Source Type</option>
+                    <option name="table1" value="1">Active Directory</option>
+                    <option name="table2" value="2">LDAP</option>
+                    <option name="table3" value="3">DataBase</option>
+                </optgroup>
+            </select>
+            <input type='submit'name ='register'>
+        </form>
+    </div>
+        
+    {{!--<div class="card" style="width: 18rem;">            
+        <div class="card-header">Active Directory</div>    
+            <div class="card-body">
+                <form action="/auth/register" method="POST">
+                    <div class="mb-3">
+                        <label for="name-reg" class="form-label">AD Server</label>
+                        <input type="text" class="form-control" id="name-reg" name="name">                        
+                    </div>
+                    <div class="mb-3">
+                        <label for="email-reg" class="form-label">AD Server Port</label>
+                        <input type="text" class="form-control" id="email-reg" name="email">                        
+                    </div>
+                    <div class="mb-3">
+                        <label for="password-reg" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password-reg" name="password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password-conf-reg" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="password-conf-reg" name="password_confirm">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        {{#if message }}
+            <h4 class="alert alert-danger mt-4">{{message}}</h4>
+        {{/if}}--}}
+</body>
+</html>

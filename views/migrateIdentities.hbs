@@ -14,11 +14,12 @@
         <h4>Identity Migration Tool</h4>
     </nav>
 
-    <div class="container mt-4">
+     <div class="container mt-4">
         <div class="mt-4 p-5 bg-primary text-white rounded" style="text-align: center;">
-            <h3>Auth0 Ingredients</h3>
-            <p>Fill the following ingredients for <b>MAGIC</b> to begin.</p>
-        </div>
+            <p>Now click on Migrate button to start the data migration process.</p>
+            <form action="/auth/replicateIdentities" method="POST">
+                <button type="submit" class="btn btn-primary">Migrate</button>
+            </form>
         </div>
     </div>
 </body>

@@ -12,11 +12,6 @@
 <body>
     <nav>
         <h4>Identity Migration Tool</h4>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/source">Register</a></li>
-        </ul>
     </nav>
 
     <div class="container mt-4">
@@ -36,12 +31,12 @@
                             <input type="text" class="form-control" id="company-reg" name="company">                        
                         </div>
                         <div class="mb-3">
-                            <label for="host-reg" class="form-label">OKTA Sub Domain URL</label>
-                            <input type="text" class="form-control" id="host-reg" name="host">                        
+                            <label for="oktaSubDomain-reg" class="form-label">OKTA Sub Domain URL</label>
+                            <input type="text" class="form-control" id="oktaSubDomain-reg" name="oktaSubDomain">                        
                         </div>
                         <div class="mb-3">
-                            <label for="password-reg" class="form-label">OKTA API Security Token</label>
-                            <input type="password" class="form-control" id="password-reg" name="password">
+                            <label for="oktaAPIToken-reg" class="form-label">OKTA API Security Token</label>
+                            <input type="password" class="form-control" id="oktaAPIToken-reg" name="oktaAPIToken">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
@@ -50,9 +45,5 @@
         </div>
 
         <div class="container mt-4"></div>
-
-        {{#if message }}
-            <h4 class="alert alert-danger mt-4">{{message}}</h4>
-        {{/if}}
 </body>
 </html>

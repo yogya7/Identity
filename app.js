@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs")
 const bodyParser = require('body-parser');
 const fs = require("fs");
 const os = require("os");
+const axios = require('axios');
 
 dotenv.config({ path: './.env'})
 
@@ -71,7 +72,10 @@ app.get("/login", (req, res) => {
 app.post("/auth/insertDestinationDetails", (req, res) => {
     const { company, oktaSubDomain, oktaAPIToken } = req.body;
 
-    const dummyTableName = company+oktaSubDomain+"Credentials";
+    var index = oktaSubDomain.indexOf(".");
+    let oktaSubDomain2 = oktaSubDomain.substring(0,index);
+    let oktaSubDomain3 = oktaSubDomain2.replaceAll("-","");
+    const dummyTableName = "Destination_Credentials";
     setEnvValue("env2","DESTABLENAME", dummyTableName);
 
     const createTableQuery = 'CREATE TABLE IF NOT EXISTS '+dummyTableName+' ( CompanyName varchar(255), OKTASubDomain varchar(255), OKTAAPIToken varchar(255));'
@@ -81,7 +85,7 @@ app.post("/auth/insertDestinationDetails", (req, res) => {
         }
         else
         {
-            console.log("Table Created!");
+            console.log("Destination table has been created!");
             const deleteTableRecordQuery = 'DELETE FROM '+dummyTableName+';'
             const insertTableQuery = 'INSERT INTO '+dummyTableName+' (CompanyName, OKTASubDomain, OKTAAPIToken) VALUES ("'+ company +'", "'+oktaSubDomain+'", "'+oktaAPIToken+'");'
             console.log(insertTableQuery);
@@ -89,16 +93,44 @@ app.post("/auth/insertDestinationDetails", (req, res) => {
                 if(error) throw err;
                 else
                 {
-                    console.log("Table record deleted");
+                    console.log("Existing table records have bee deleted!");
                     db.query(insertTableQuery, (err, result) => {
                         if(error) throw err;
-                        console.log("record Inserted"+result);
+                        console.log("Destination credentials have been stored in database!");
                         res.render("secondPhase");
                     });
                 }  
             })  
         }   
     })
+})
+
+
+app.post("/auth/replicateIdentities", (req, res) => {
+    let data = '';
+    let replicateResult = '';
+    
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://kp6r8dfyt4.execute-api.us-east-1.amazonaws.com/sqldbdata',
+        headers: { },
+        data : data
+    };
+ 
+    axios.request(config)
+        .then((response) => {
+            replicateResult = JSON.stringify(response.data);
+            console.log(replicateResult);
+            let replicateResult2 = replicateResult.replaceAll('"','');
+            if(replicateResult2 === 'Identities Replicated!')
+            {
+                res.render("migrateIdentities");
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 })
 
 app.post("/auth/insertDBdetails", (req, res) => {    
@@ -115,7 +147,7 @@ app.post("/auth/insertDBdetails", (req, res) => {
         }
         else
         {
-            console.log("Table Created!");
+            console.log("Source table has been created!");
             const deleteTableRecordQuery = 'DELETE FROM '+dummyTableName+';'
             const insertTableQuery = 'INSERT INTO '+dummyTableName+' (CompanyName, Host, Port, Username, Password, DBName, TableName) VALUES ("'+ company +'", "'+host+'", "'+port+'", "'+username+'", "'+password+'", "'+dbname+'", "'+dbtable+'");'
             console.log(insertTableQuery);
@@ -123,10 +155,10 @@ app.post("/auth/insertDBdetails", (req, res) => {
                 if(error) throw err;
                 else
                 {
-                    console.log("Table record deleted");
+                    console.log("Existing table record has been deleted!");
                     db.query(insertTableQuery, (err, result) => {
                         if(error) throw err;
-                        console.log("record Inserted"+result);
+                        console.log("Source credentials have been stored in database!");
                         res.render("destination");
                     });
                 }  
@@ -163,7 +195,6 @@ app.post("/getSelected", (req, res) => {
 })
 
 
-
-app.listen(5000, ()=> {
-    console.log("server started on port 5000")
+app.listen(5001, ()=> {
+    console.log("server started on port 5001")
 })

@@ -12,49 +12,15 @@
 <body>
     <nav>
         <h4>Identity Migration Tool</h4>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/source">Register</a></li>
-        </ul>
     </nav>
 
      <div class="container mt-4">
         <div class="mt-4 p-5 bg-primary text-white rounded" style="text-align: center;">
-            <p>Now click on MAGIC button to start the migration process.<b>MAGIC!</b></p>
-            <a href="/source" style="text-decoration: none; color:#ffffff; font-size:30px;">MAGIC</a>
+            <p>Now click on Replicate button to start the data replication process.</p>
+            <form action="/auth/replicateIdentities" method="POST">
+                <button type="submit" class="btn btn-primary">Replicate</button>
+            </form>
         </div>
     </div>
-
-            
-    {{!--<div class="card" style="width: 18rem;">            
-        <div class="card-header">Active Directory</div>    
-            <div class="card-body">
-                <form action="/auth/register" method="POST">
-                    <div class="mb-3">
-                        <label for="name-reg" class="form-label">AD Server</label>
-                        <input type="text" class="form-control" id="name-reg" name="name">                        
-                    </div>
-                    <div class="mb-3">
-                        <label for="email-reg" class="form-label">AD Server Port</label>
-                        <input type="text" class="form-control" id="email-reg" name="email">                        
-                    </div>
-                    <div class="mb-3">
-                        <label for="password-reg" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password-reg" name="password">
-                    </div>
-                    <div class="mb-3">
-                        <label for="password-conf-reg" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="password-conf-reg" name="password_confirm">
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-        </div>
-
-        {{#if message }}
-            <h4 class="alert alert-danger mt-4">{{message}}</h4>
-        {{/if}}--}}
 </body>
 </html>

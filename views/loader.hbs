@@ -16,9 +16,9 @@
 
      <div class="container mt-4">
         <div class="mt-4 p-5 bg-primary text-white rounded" style="text-align: center;">
-            <p>Now click on Migrate button to start the data migration process.</p>
-            <form action="/auth/migrateIdentities" method="POST">
-                <button type="submit" class="btn btn-primary">Migrate</button>
+            <p>Identities are being migrated. Click on below Status button to view result.</p>
+            <form action="/auth/getLogs" method="GET">
+                <button type="submit" class="btn btn-primary">Get Status</button>
             </form>
         </div>
     </div>

@@ -16,10 +16,17 @@
 
      <div class="container mt-4">
         <div class="mt-4 p-5 bg-primary text-white rounded" style="text-align: center;">
-            <p>Now click on Migrate button to start the data migration process.</p>
-            <form action="/auth/migrateIdentities" method="POST">
-                <button type="submit" class="btn btn-primary">Migrate</button>
-            </form>
+            <button id="refresh-btn" class="btn btn-primary">Refresh Code</button>
+            <p>Total Success, Failure and Users counts are as follows:</p>
+            <pre id="code-display">{{code}}</pre>
+        
+            <script>
+                document.getElementById('refresh-btn').addEventListener('click', async () => {
+                const res = await fetch('/auth/getLogs');
+                const data = await res.json();
+                document.getElementById('code-display').textContent = data1.code;
+                });
+            </script>
         </div>
     </div>
 </body>

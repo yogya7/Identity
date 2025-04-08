@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const fs = require("fs");
 const os = require("os");
 const axios = require('axios');
+const store = require('store');
 
 dotenv.config({ path: './.env'})
 
@@ -72,6 +73,12 @@ app.get("/login", (req, res) => {
 app.post("/auth/insertDestinationDetails", (req, res) => {
     const { company, oktaSubDomain, oktaAPIToken } = req.body;
 
+    store.set('subDomain', { name: oktaSubDomain });
+    store.set('apiToken', { name : oktaAPIToken });
+
+    console.log(store.get('subDomain'));
+    console.log(store.get('apiToken'));
+
     var index = oktaSubDomain.indexOf(".");
     let oktaSubDomain2 = oktaSubDomain.substring(0,index);
     let oktaSubDomain3 = oktaSubDomain2.replaceAll("-","");
@@ -113,7 +120,7 @@ app.post("/auth/replicateIdentities", (req, res) => {
     let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://kp6r8dfyt4.execute-api.us-east-1.amazonaws.com/sqldbdata',
+        url: 'https://oq5q83v42i.execute-api.us-east-1.amazonaws.com/sqldbdata',
         headers: { },
         data : data
     };
@@ -127,6 +134,75 @@ app.post("/auth/replicateIdentities", (req, res) => {
             {
                 res.render("migrateIdentities");
             }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+})
+
+app.post("/auth/migrateIdentities", (req, res) => {
+    const axios = require('axios');
+
+    let nextPage, nextPage2;
+
+    let data = JSON.stringify({
+        "OktaURL": store.get('subDomain').name,
+        "Token": store.get('apiToken').name,
+        "TableName": "User_Identity_Dummy"
+    });
+ 
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://oq5q83v42i.execute-api.us-east-1.amazonaws.com/createuser/okta',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data : data
+    };
+ 
+    axios.request(config)
+        .then((response) => {
+            console.log(JSON.stringify(response.data));
+            nextPage = JSON.stringify(response.data);
+            nextPage2 = nextPage.substring(1,7);
+            console.log(nextPage2);
+            if(nextPage2 === "UPDATE")
+            {
+                res.render("loader");
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+})
+
+app.get("/auth/getLogs", (req, res) => {
+    const axios = require('axios');
+    let data = JSON.stringify({
+    "tableName": "User_Identity_Dummy"
+    });
+ 
+    let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: 'https://oq5q83v42i.execute-api.us-east-1.amazonaws.com/createuser/okta/logs',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        data : data
+    };
+ 
+    axios.request(config)
+        .then((response) => {
+
+            const results = [response.data.success, response.data.failuer, response.data.totalUsers];
+            console.log(JSON.stringify(response.data.success));
+            console.log(JSON.stringify(response.data.failuer));
+            console.log(JSON.stringify(response.data.totalUsers));
+            const data1 = results;
+            res.render('statusViewer', { code: data1 });
+            return response;
         })
         .catch((error) => {
             console.log(error);
